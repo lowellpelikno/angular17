@@ -1,0 +1,53 @@
+<p>articulo works!</p>
+<div>
+  <h1>Administración de artículos</h1>
+  <h2>Formularios Reactivos</h2>
+  <a routerLink="/articulo-crear" class="btn-nuevo">Crear Nuevo</a>
+  <br/>
+  <br/>
+  @if (hayRegistros()) {
+  <table >
+    <thead>
+      <tr>
+        <th>
+          Codigo
+          <button (click)="ordernarPorCodigo()">Ordenar por Codigo</button>
+        </th>
+        <th>
+          Descripcion
+          <button (click)="ordernarPorDescripcion()">
+            Ordenar por Descripcion
+          </button>
+        </th>
+        <th>
+          Precio
+          <button (click)="ordernarPorMenorPrecio()">
+            Ordenar por Menor Precio
+          </button>
+          &nbsp;
+          <button (click)="ordernarPorMayorPrecio()">
+            Ordenar por Mayor Precio
+          </button>
+        </th>
+        <th>Borrar</th>
+        <th>editar</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for(art of articulos; track art.codigo) {
+      <tr>
+        <td>{{ art.codigo }}</td>
+        <td>{{ art.descripcion }}</td>
+        <td>{{ art.precio }}</td>
+        <td><button (click)="borrar(art.codigo)">Borrar?</button></td>
+        <td><a routerLink="/articulo-editar/{{ art.codigo }}" class="btn-nuevo">Editar</a></td>
+      </tr>
+      }
+    </tbody>
+  </table>
+  } @else {
+  <p>No hay articulos.</p>
+  }
+
+  
+</div>

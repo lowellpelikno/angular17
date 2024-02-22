@@ -1,0 +1,29 @@
+<p>articulo works!</p>
+<div>
+  <h1>Administración de artículos</h1>
+  <h2>Formularios Reactivos - Editar</h2>
+  <div style="    display: flex;flex-direction: column;align-items: center;">
+    
+    <form [formGroup]="formularioArticulo" (ngSubmit)="editar()" style="display: flex;align-content: stretch;align-items: flex-end;flex-direction: column;flex-wrap: nowrap;">
+      <p>
+        codigo:<input
+          type="number"
+          formControlName="codigo"
+          [disabled]="true"
+        />
+      </p>
+      <p>descripcion:<input type="text" formControlName="descripcion" /></p>
+      <p>precio:<input type="text" formControlName="precio" /></p>
+      <!-- @if(this.formularioArticulo.get('precio')?.errors?.['pattern']) {
+        <span>Formato invalido</span>
+      } -->
+      <p>
+        <!-- <button (click)="agregar()">Agregar</button> -->
+        <button type="submit">Guardar Cambios</button>
+        |
+        <button (click)="limpiar()">Limpiar Campos</button>
+        <!-- <button (click)="modificar()">Modificar</button> -->
+      </p>
+    </form>
+  </div>
+</div>

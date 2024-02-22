@@ -1,0 +1,27 @@
+<p>articulo works!</p>
+<div>
+  <h1>Administración de artículos</h1>
+  <h2>Formularios Reactivos</h2>
+  <div>
+    <p><button (click)="limpiar()" class="btn-limpiar">Limpiar Campos</button></p>
+    <form [formGroup]="formularioArticulo" (ngSubmit)="agregar()">
+      <p>
+        codigo:<input
+          type="number"
+          formControlName="codigo"
+        /><!-- disabled="{{ desableImputCodigo }}" -->
+      </p>
+      <p>descripcion:<input type="text" formControlName="descripcion" /></p>
+      <p>precio:<input type="text" formControlName="precio" /></p>
+      <!-- @if(this.formularioArticulo.get('precio')?.errors?.['pattern']) {
+        <span>Formato invalido</span>
+      } -->
+      <p>
+        <!-- <button (click)="agregar()">Agregar</button> -->
+        <button type="submit" class="btn-nuevo">Guardar</button>
+        |
+        <a routerLink="/articulo-list" class="btn-regresar">Regresar a listado</a>
+      </p>
+    </form>
+  </div>
+</div>
