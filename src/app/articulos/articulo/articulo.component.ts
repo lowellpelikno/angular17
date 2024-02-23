@@ -3,6 +3,7 @@ import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { Articulo } from '../../interface/articulo';
+import { ArticulosService } from '../../services/articulos.service';
 
 @Component({
   selector: 'app-articulo',
@@ -22,22 +23,11 @@ title = 'Formualrios.Reactivos';
   //art: Articulo = { codigo: 0, descripcion: '', precio: 0 };Validators.pattern("^[0-9]*$")
   desableImputCodigo = false;
   nuevoArticulo = true;
-  textoBotonSubmit = 'Crear Nuevo';
-  articulos: Array<Articulo> = []
+  articulos: Array<Articulo> = [];
+  articulo: Articulo = {codigo:0,descripcion:'',precio:0};
   mensaje: string = '';
-  //localStorage: Storage;
-  constructor(@Inject(DOCUMENT) private document: Document) { 
-   const localStorage = document.defaultView?.localStorage;
-
-    if (localStorage) {
-      const articuloList = localStorage.getItem('articulos');
-      if (articuloList) {
-        this.articulos = JSON.parse(articuloList);
-        return;
-      }
-      this.mensaje = "no se encontraron articulos";
-      console.log(this.mensaje);
-    }
+  constructor(private articulosServicio: ArticulosService) { 
+  
   }
   
   agregar() {
@@ -45,24 +35,12 @@ title = 'Formualrios.Reactivos';
       alert('Debe ingresar un código de articulo distinto a cero');
       return;
     }
-
-    const findByDescripcion = this.articulos.find(v => v.descripcion == this.formularioArticulo.value.descripcion);
-    let findByCodigo = this.articulos.find(v => v.codigo == this.formularioArticulo.get('codigo')?.value)!;
-    if (findByDescripcion != undefined) {
-      if (findByDescripcion?.codigo != findByCodigo?.codigo) {
-        alert('ya existe un articulo con dicha descripcion');
-        return;
-      }
-    }
-    this.articulos.push({
-      codigo: this.formularioArticulo.get('codigo')?.value ?? 0,
-      descripcion: this.formularioArticulo.get('descripcion')?.value ?? '',
-      precio: Number(this.formularioArticulo.get('precio')?.value )?? '',
-    });
-      
-    localStorage.setItem('articulos',JSON.stringify(this.articulos));
-    alert('articulo guardado');
-    this.limpiar();
+    this.articulo.codigo = this.formularioArticulo.get('codigo')?.value??0;
+    this.articulo.descripcion = this.formularioArticulo.get('descripcion')?.value??'';
+    this.articulo.precio = Number(this.formularioArticulo.get('precio')?.value) ?? 0;
+    const result = this.articulosServicio.Add(this.articulo!);
+    this.mensaje= result;
+    this.limpiar();    
   }
   limpiar() {
     this.formularioArticulo.controls['codigo'].setValue(0);

@@ -3,6 +3,7 @@ import { Component, Inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { Articulo } from '../../interface/articulo';
+import { ArticulosService } from '../../services/articulos.service';
 
 @Component({
   selector: 'app-articulo-list',
@@ -18,35 +19,17 @@ title = 'Formualrios.Reactivos';
     descripcion: new FormControl(''),
     precio: new FormControl('', { validators:[Validators.pattern("/^(\d+)?([.]?\d{0,2})?$/g")]}),
   });
-
-  //art: Articulo = { codigo: 0, descripcion: '', precio: 0 };Validators.pattern("^[0-9]*$")
   desableImputCodigo = false;
   nuevoArticulo = true;
   textoBotonSubmit = 'Crear Nuevo';
   articulos: Array<Articulo> = [];
-  // articulos: Array<Articulo> = [
-  //   { codigo: 1, descripcion: 'papas', precio: 70.55 },
-  //   { codigo: 2, descripcion: 'manzanas', precio: 12.1 },
-  //   { codigo: 3, descripcion: 'melon', precio: 52.3 },
-  //   { codigo: 4, descripcion: 'cebollas', precio: 8 },
-  //   { codigo: 5, descripcion: 'calabaza', precio: 70.56 },
-  // ];
-  constructor(@Inject(DOCUMENT) private document: Document) { 
-    const localStorage = document.defaultView?.localStorage;
-
-    if (localStorage) {
-      const articulosLocal = localStorage.getItem('articulos');
-
-      if (articulosLocal) {
-        this.articulos = JSON.parse(articulosLocal);
-        let visuta = '';
-      } 
-    }
+  
+  constructor(private articulosServicio: ArticulosService) { 
+    
     this.hayRegistros()
   }
   hayRegistros() {
-    console.log(this.articulos.length);
-    console.log(this.articulos);
+    this.articulos = this.articulosServicio.FillData();
     return this.articulos.length > 0;
   }
   ordernarPorDescripcion() {
@@ -78,9 +61,6 @@ title = 'Formualrios.Reactivos';
       localStorage.setItem('articulos',JSON.stringify(this.articulos));
       return;
       }
-    
-
-
     for (let x = 0; x < this.articulos.length; x++)
       if (this.articulos[x].codigo == codigo) {
         this.articulos.splice(x, 1);

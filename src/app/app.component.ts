@@ -1,7 +1,7 @@
 import { CommonModule, DOCUMENT } from '@angular/common';
 import { Component, Inject } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { Articulo } from './interface/articulo';
+import { ArticulosService } from './services/articulos.service';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +12,9 @@ import { Articulo } from './interface/articulo';
 })
 export class AppComponent {
   title = 'angular.ruter';
-  
+  constructor(private articulosServicio: ArticulosService) { 
+    this.articulosServicio.InitializeData();
+  }
 
 
   

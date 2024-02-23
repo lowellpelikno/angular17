@@ -2,14 +2,19 @@
 <div>
   <h1>Administración de artículos</h1>
   <h2>Formularios Reactivos - Editar</h2>
-  <div style="    display: flex;flex-direction: column;align-items: center;">
-    
+  <div style="display: flex;flex-direction: column;align-items: center;">
+    @if(mensaje!=''){
+      <p style="background-color: rgb(239 110 110);
+    color: antiquewhite;
+    font-weight: bold;
+    padding: 2px;
+    border-radius: 2px;">{{mensaje}}</p>
+    }
     <form [formGroup]="formularioArticulo" (ngSubmit)="editar()" style="display: flex;align-content: stretch;align-items: flex-end;flex-direction: column;flex-wrap: nowrap;">
       <p>
         codigo:<input
           type="number"
           formControlName="codigo"
-          [disabled]="true"
         />
       </p>
       <p>descripcion:<input type="text" formControlName="descripcion" /></p>
