@@ -5,6 +5,9 @@
   <a routerLink="/articulo-crear" class="btn-nuevo">Crear Nuevo</a>
   <br/>
   <br/>
+  @if(mensaje!=''){
+      <p [ngClass]="classBackgroundColor">{{mensaje}}</p>
+    }
   @if (hayRegistros()) {
   <table >
     <thead>
@@ -34,13 +37,13 @@
       </tr>
     </thead>
     <tbody>
-      @for(art of articulos; track art.codigo) {
+      @for(art of articulos; track art.id) {
       <tr>
-        <td>{{ art.codigo }}</td>
+        <td>{{ art.id }}</td>
         <td>{{ art.descripcion }}</td>
         <td>{{ art.precio }}</td>
-        <td><button (click)="borrar(art.codigo)">Borrar?</button></td>
-        <td><a routerLink="/articulo-editar/{{ art.codigo }}" class="btn-nuevo">Editar</a></td>
+        <td><button (click)="borrar(art.id)">Borrar?</button></td>
+        <td><a routerLink="/articulo-editar/{{ art.id }}" class="btn-nuevo">Editar</a></td>
       </tr>
       }
     </tbody>

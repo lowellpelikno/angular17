@@ -17,62 +17,52 @@ export class ArticuloEditarComponent implements OnInit{
   cod: number=0; 
 //art: Articulo = { codigo: 0, descripcion: '', precio: 0 };Validators.pattern("^[0-9]*$")
   desableImputCodigo = false;
-  nuevoArticulo = true;
-  textoBotonSubmit = 'Crear Nuevo';
   mensaje: string = "";
-  articulos: Array<Articulo> = [];
-  articulo: Articulo | undefined;
+  classBackgroundColor = "mensajeSuccess";
+  articulo!: Articulo;
 
   formularioArticulo = new FormGroup({
     codigo: new FormControl({ value: 0, disabled:true }, { validators: [Validators.required] }),
     descripcion: new FormControl(''),
-    precio: new FormControl('', { validators:[Validators.pattern("/^(\d+)?([.]?\d{0,2})?$/g")]}),
+    precio: new FormControl(''),
   });
   constructor(private activatedRoute: ActivatedRoute, private articulosServicio: ArticulosService) {
     this.activatedRoute.paramMap.subscribe((parametros: ParamMap) => {
       this.cod = parseInt(parametros.get("cod")!);
     });
+    this.articulo = { id: 0, descripcion: '', precio: 0 };
   }  
   ngOnInit() {
     this.hayRegistros();
   }
   hayRegistros() {
-    this.articulo = this.articulosServicio.ExistByCode(this.cod);
-    if (this.articulo === undefined){
-      this.mensaje = 'no se encontro el artículo...';
-      return false;
-    }
-    this.formularioArticulo.controls['codigo'].setValue(this.articulo?.codigo??0);
-    this.formularioArticulo.controls['descripcion'].setValue(this.articulo?.descripcion??'');
-    this.formularioArticulo.controls['precio'].setValue(this.articulo?.precio.toString()??'');
-    return true;
-
-  //   this.articulos = this.articulosServicio.FillData();
-  //  this.articulo = this.articulos.find((firstObject: Articulo) =>
-  //     firstObject.codigo == this.cod
-  //   );
-  //   if (this.articulo === undefined) {
-  //     this.mensaje = 'no se encontro el artículo...';
-  //     return false;
-  //   }
-  //   this.formularioArticulo.controls['codigo'].setValue(this.articulo?.codigo??0);
-  //   this.formularioArticulo.controls['descripcion'].setValue(this.articulo?.descripcion??'');
-  //   this.formularioArticulo.controls['precio'].setValue(this.articulo?.precio.toString()??'');
-  //   return true;
+    this.articulosServicio.ExistByCode(this.cod).subscribe((result: any) => {
+      this.mensaje = result.mensaje;
+      if (!result.success) {
+        this.classBackgroundColor = "mensajeError";
+        return;
+      }
+      this.formularioArticulo.controls['codigo'].setValue(result?.data?.id??0);
+      this.formularioArticulo.controls['descripcion'].setValue(result?.data?.descripcion??'');
+      this.formularioArticulo.controls['precio'].setValue(result?.data?.precio.toString()??'');
+    });
   }  
   editar() {
-    if (this.formularioArticulo.value.codigo == 0) {
+    if (this.formularioArticulo.get('codigo')?.value == 0) {
       this.mensaje = 'Debe ingresar un código de articulo distinto a cero';
     }
-    this.articulo!.codigo = this.formularioArticulo.get('codigo')?.value??0;
-    this.articulo!.descripcion = this.formularioArticulo.get('descripcion')?.value??'';
-    this.articulo!.precio = Number(this.formularioArticulo.get('precio')?.value) ?? 0;
-    const result = this.articulosServicio.Edit(this.articulo!);
-    this.mensaje= result;
+    this.articulo.id = this.formularioArticulo.get('codigo')?.value??0;
+    this.articulo.descripcion = this.formularioArticulo.get('descripcion')?.value??'';
+    this.articulo.precio = Number(this.formularioArticulo.get('precio')?.value) ?? 0;
+    this.articulosServicio.Edit(this.articulo!).subscribe((result:any) => {
+      this.mensaje = result.mensaje;
+      if (!result.success) this.classBackgroundColor = "mensajeError";
+      else this.limpiar();
+    });
+    
   }
   
-  limpiar() {
-    this.formularioArticulo.controls['codigo'].enable();
+  limpiar() {    
     this.formularioArticulo.controls['codigo'].setValue(0);
     this.formularioArticulo.controls['descripcion'].setValue('');
     this.formularioArticulo.controls['precio'].setValue('0');

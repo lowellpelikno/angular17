@@ -1,9 +1,10 @@
 import { CommonModule, DOCUMENT } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { Articulo } from '../../interface/articulo';
 import { ArticulosService } from '../../services/articulos.service';
+import { retry } from 'rxjs';
 
 @Component({
   selector: 'app-articulo-list',
@@ -12,24 +13,17 @@ import { ArticulosService } from '../../services/articulos.service';
   templateUrl: './articuloList.component.html',
   styleUrl: './articuloList.component.css'
 })
-export class ArticuloListComponent {
-title = 'Formualrios.Reactivos';
-  formularioArticulo = new FormGroup({
-    codigo: new FormControl(0, { validators: [Validators.required] }),
-    descripcion: new FormControl(''),
-    precio: new FormControl('', { validators:[Validators.pattern("/^(\d+)?([.]?\d{0,2})?$/g")]}),
-  });
-  desableImputCodigo = false;
-  nuevoArticulo = true;
-  textoBotonSubmit = 'Crear Nuevo';
+export class ArticuloListComponent implements OnInit{
+  title = 'Formualrios.Reactivos';
   articulos: Array<Articulo> = [];
-  
-  constructor(private articulosServicio: ArticulosService) { 
-    
-    this.hayRegistros()
+  mensaje: string = "";
+  classBackgroundColor = "mensajeSuccess";
+  constructor(private articulosServicio: ArticulosService) { }
+  ngOnInit(): void {
+    this.articulosServicio.Get().subscribe((result:any) => this.articulos = result.data);
   }
   hayRegistros() {
-    this.articulos = this.articulosServicio.FillData();
+    
     return this.articulos.length > 0;
   }
   ordernarPorDescripcion() {
@@ -39,7 +33,7 @@ title = 'Formualrios.Reactivos';
   }
   ordernarPorCodigo() {
     this.articulos.sort((firstObject: Articulo, secondObject: Articulo) =>
-      firstObject.codigo > secondObject.codigo ? 1 : -1
+      firstObject.id > secondObject.id ? 1 : -1
     );
   }
   ordernarPorMenorPrecio() {
@@ -53,19 +47,14 @@ title = 'Formualrios.Reactivos';
     );
   }
   borrar(codigo: number) {
-
-    let findByCodigo = this.articulos.findIndex(v => v.codigo == codigo);
-    
-    if (findByCodigo) {
-      this.articulos.splice(findByCodigo, 1);
-      localStorage.setItem('articulos',JSON.stringify(this.articulos));
-      return;
-      }
-    for (let x = 0; x < this.articulos.length; x++)
-      if (this.articulos[x].codigo == codigo) {
-        this.articulos.splice(x, 1);
+    this.articulosServicio.Delete(codigo).subscribe((result: any) => {
+      this.mensaje = result.mensaje;
+      if (!result.success) {
+        this.classBackgroundColor = 'mensajeError';
         return;
       }
+      this.articulosServicio.Get().subscribe((result:any) => this.articulos = result.data);
+    });
   }
  
 }
