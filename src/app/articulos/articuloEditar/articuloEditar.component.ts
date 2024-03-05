@@ -20,7 +20,7 @@ export class ArticuloEditarComponent implements OnInit{
   mensaje: string = "";
   classBackgroundColor = "mensajeSuccess";
   articulo!: Articulo;
-
+  monto = 0;
   formularioArticulo = new FormGroup({
     codigo: new FormControl({ value: 0, disabled:true }, { validators: [Validators.required] }),
     descripcion: new FormControl(''),
@@ -44,16 +44,17 @@ export class ArticuloEditarComponent implements OnInit{
       }
       this.formularioArticulo.controls['codigo'].setValue(result?.data?.id??0);
       this.formularioArticulo.controls['descripcion'].setValue(result?.data?.descripcion??'');
-      this.formularioArticulo.controls['precio'].setValue(result?.data?.precio.toString()??'');
+      this.formularioArticulo.controls['precio'].setValue(result?.data?.precio??'');
     });
   }  
   editar() {
     if (this.formularioArticulo.get('codigo')?.value == 0) {
       this.mensaje = 'Debe ingresar un código de articulo distinto a cero';
     }
+    const prec = this.formularioArticulo.get('precio')?.value ?? '0';
     this.articulo.id = this.formularioArticulo.get('codigo')?.value??0;
     this.articulo.descripcion = this.formularioArticulo.get('descripcion')?.value??'';
-    this.articulo.precio = Number(this.formularioArticulo.get('precio')?.value) ?? 0;
+    this.articulo.precio = Number(prec.replace('$',''));
     this.articulosServicio.Edit(this.articulo!).subscribe((result:any) => {
       this.mensaje = result.mensaje;
       if (!result.success) this.classBackgroundColor = "mensajeError";

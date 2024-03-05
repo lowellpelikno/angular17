@@ -13,7 +13,7 @@
           formControlName="codigo"
         />
       </p>
-      <p>descripcion:<input type="text" formControlName="descripcion" /></p>
+      <p>descripcion:<input type="text" [value]="formularioArticulo.get('descripcion')?.value| uppercase" formControlName="descripcion" /></p>
       <p>precio:<input type="text" formControlName="precio" /></p>
       <!-- @if(this.formularioArticulo.get('precio')?.errors?.['pattern']) {
         <span>Formato invalido</span>

@@ -40,8 +40,8 @@
       @for(art of articulos; track art.id) {
       <tr>
         <td>{{ art.id }}</td>
-        <td>{{ art.descripcion }}</td>
-        <td>{{ art.precio }}</td>
+        <td>{{ art.descripcion|uppercase }}</td>
+        <td>{{ art.precio|currency:'$' }}</td>
         <td><button (click)="borrar(art.id)">Borrar?</button></td>
         <td><a routerLink="/articulo-editar/{{ art.id }}" class="btn-nuevo">Editar</a></td>
       </tr>
