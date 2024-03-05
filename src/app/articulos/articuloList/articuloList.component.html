@@ -1,56 +1,29 @@
-<p>articulo works!</p>
-<div>
-  <h1>Administración de artículos</h1>
-  <h2>Formularios Reactivos</h2>
-  <a routerLink="/articulo-crear" class="btn-nuevo">Crear Nuevo</a>
-  <br/>
-  <br/>
-  @if(mensaje!=''){
-      <p [ngClass]="classBackgroundColor">{{mensaje}}</p>
-    }
-  @if (hayRegistros()) {
-  <table >
-    <thead>
-      <tr>
-        <th>
-          Codigo
-          <button (click)="ordernarPorCodigo()">Ordenar por Codigo</button>
-        </th>
-        <th>
-          Descripcion
-          <button (click)="ordernarPorDescripcion()">
-            Ordenar por Descripcion
-          </button>
-        </th>
-        <th>
-          Precio
-          <button (click)="ordernarPorMenorPrecio()">
-            Ordenar por Menor Precio
-          </button>
-          &nbsp;
-          <button (click)="ordernarPorMayorPrecio()">
-            Ordenar por Mayor Precio
-          </button>
-        </th>
-        <th>Borrar</th>
-        <th>editar</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for(art of articulos; track art.id) {
-      <tr>
-        <td>{{ art.id }}</td>
-        <td>{{ art.descripcion|uppercase }}</td>
-        <td>{{ art.precio|currency:'$' }}</td>
-        <td><button (click)="borrar(art.id)">Borrar?</button></td>
-        <td><a routerLink="/articulo-editar/{{ art.id }}" class="btn-nuevo">Editar</a></td>
-      </tr>
-      }
-    </tbody>
-  </table>
-  } @else {
-  <p>No hay articulos.</p>
-  }
+<div class="mat-elevation-z8"  style="width: 30% !important;">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort style="width: 30% !important;">
 
-  
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header  style="flex: 0 0 10% !important;"> Código </th>
+      <td mat-cell *matCellDef="let articulo"> {{articulo.id}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="descripcion">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header  style="flex: 0 0 50% !important;"> Descripción </th>
+      <td mat-cell *matCellDef="let articulo"> {{articulo.descripcion}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="precio">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header style="flex: 0 0 10% !important;"> Precio </th>
+      <td mat-cell *matCellDef="let articulo" style="text-align: right"> {{articulo.precio|currency:'$'}} </td>
+    </ng-container>
+    <ng-container matColumnDef="editar">
+    <th mat-header-cell *matHeaderCellDef  style="flex: 0 0 10% !important;"> Editar </th>
+    <td mat-cell *matCellDef="let element"><a routerLink="/articulo-editar/{{ element.id }}" mat-raised-button color="primary">Editar</a></td>
+  </ng-container>
+    <ng-container matColumnDef="eliminar">
+      <th mat-header-cell *matHeaderCellDef style="flex: 0 0 10% !important;"> Eliminar </th>
+      <td mat-cell *matCellDef="let element"><button (click)="borrar(element.id)" mat-raised-button color="warn">Eliminar?</button>  </td> 
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="columnas"></tr>
+    <tr mat-row *matRowDef="let row; columns: columnas;"></tr>
+  </table>
 </div>

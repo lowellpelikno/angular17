@@ -1,27 +1,12 @@
-/* Estilo para la tabla */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
-}
-
-/* Estilo para las celdas de encabezado */
-th,
-td {
-  border: 1px solid #dddddd;
-  padding: 8px;
-  text-align: left;
-}
-
-/* Estilo alternado para filas */
-tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-/* Estilo para el encabezado de la tabla */
-th {
-  background-color: #4caf50;
-  color: white;
+.btn-nuevo {
+    cursor: pointer ;
+    padding: 10px 20px !important;
+    background-color: #4caf50 !important;
+    color: white !important;
+    text-decoration: none !important;
+    border-radius: 3px !important;
+    border: 1px solid black !important;
+    margin-bottom: 5px !important;
 }
 .mensajeSuccess{
   background-color: #4caf50;

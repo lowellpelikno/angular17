@@ -4,11 +4,15 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute, RouterLink, RouterOutlet } from '@angular/router';
 import { Articulo } from '../../interface/articulo';
 import { ArticulosService } from '../../services/articulos.service';
+import {FormsModule} from '@angular/forms';
+
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-articulo',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, ReactiveFormsModule,RouterLink],
+  imports: [CommonModule, RouterOutlet, ReactiveFormsModule,RouterLink,MatInputModule,MatButtonModule,FormsModule],
   templateUrl: './articulo.component.html',
   styleUrl: './articulo.component.css'
 })

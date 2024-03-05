@@ -7,22 +7,34 @@
       <p [ngClass]="classBackgroundColor">{{mensaje}}</p>
     }
     <form [formGroup]="formularioArticulo" (ngSubmit)="editar()" style="display: flex;align-content: stretch;align-items: flex-end;flex-direction: column;flex-wrap: nowrap;">
-      <p>
+      
+      <mat-form-field>
+        <input matInput type="text" formControlName="codigo" placeholder="código"/>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="text" formControlName="descripcion" [value]="formularioArticulo.get('descripcion')?.value| uppercase" placeholder="descripción"/>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="text" formControlName="precio" placeholder="precio"/>
+      </mat-form-field>
+      <!-- <p>
         codigo:<input
           type="number"
           formControlName="codigo"
         />
       </p>
       <p>descripcion:<input type="text" [value]="formularioArticulo.get('descripcion')?.value| uppercase" formControlName="descripcion" /></p>
-      <p>precio:<input type="text" formControlName="precio" /></p>
+      <p>precio:<input type="text" formControlName="precio" /></p> -->
       <!-- @if(this.formularioArticulo.get('precio')?.errors?.['pattern']) {
         <span>Formato invalido</span>
       } -->
       <p>
         <!-- <button (click)="agregar()">Agregar</button> -->
-        <button type="submit">Guardar Cambios</button>
+        <button mat-raised-button type="submit" class="btn-nuevo">Guardar Cambios</button>
         |
-        <button (click)="limpiar()">Limpiar Campos</button>
+        <button (click)="limpiar()" mat-raised-button color="warn" >Limpiar Campos</button>
+        |
+        <a routerLink="/articulo-list" mat-raised-button color="primary">Regresar a listado</a>
         <!-- <button (click)="modificar()">Modificar</button> -->
       </p>
     </form>

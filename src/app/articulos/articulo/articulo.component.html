@@ -6,7 +6,7 @@
     @if(mensaje!=''){
       <p [ngClass]="classBackgroundColor">{{mensaje}}</p>
     }
-    <p><button (click)="limpiar()" class="btn-limpiar">Limpiar Campos</button></p>
+    <p><button (click)="limpiar()" mat-raised-button color="warn">Limpiar Campos</button></p>
     <form [formGroup]="formularioArticulo" (ngSubmit)="agregar()"  style="display: flex;align-content: stretch;align-items: flex-end;flex-direction: column;flex-wrap: nowrap;">
       <!-- <p>
         codigo:<input
@@ -14,16 +14,22 @@
           formControlName="codigo"
         />
       </p> -->
-      <p>descripcion:<input type="text" formControlName="descripcion" /></p>
-      <p>precio:<input type="text" formControlName="precio" /></p>
+      <mat-form-field>
+        <input matInput type="text" formControlName="descripcion" placeholder="descripción"/>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="text" formControlName="precio" placeholder="precio"/>
+      </mat-form-field>
+      <!-- <p>descripcion:<input type="text" formControlName="descripcion" /></p> -->
+      <!-- <p>precio:<input type="text" formControlName="precio" /></p> -->
       <!-- @if(this.formularioArticulo.get('precio')?.errors?.['pattern']) {
         <span>Formato invalido</span>
       } -->
       <p>
         <!-- <button (click)="agregar()">Agregar</button> -->
-        <button type="submit" class="btn-nuevo">Guardar</button>
+        <button mat-raised-button color="accent" type="submit" class="btn-nuevo">Guardar</button>
         |
-        <a routerLink="/articulo-list" class="btn-regresar">Regresar a listado</a>
+        <a routerLink="/articulo-list" mat-raised-button color="primary">Regresar a listado</a>
       </p>
     </form>
   </div>

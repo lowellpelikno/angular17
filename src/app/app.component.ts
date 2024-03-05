@@ -1,15 +1,14 @@
-import { CommonModule, DOCUMENT } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { ArticulosService } from './services/articulos.service';
-import { Articulo } from './interface/articulo';
+import { BarraLateralComponent } from "./barra-lateral/barra-lateral.component";
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+    selector: 'app-root',
+    standalone: true,
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.css',
+    imports: [CommonModule, RouterOutlet, RouterLink, BarraLateralComponent]
 })
 export class AppComponent {
   title = 'angular.ruter';
