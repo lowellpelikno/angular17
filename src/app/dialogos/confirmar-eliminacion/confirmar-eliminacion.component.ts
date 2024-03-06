@@ -24,7 +24,10 @@ export class ConfirmarEliminacionComponent {
     
   }  
   ngOnInit() {
-    this.mensaje = `¿Estás seguro de eliminar este artículo? \n código:${this.data.id} \n descripción:${this.data.descripcion} \n precio:${this.data.precio}`;
+    this.mensaje = ` 
+    código:${this.data.id}
+    descripción:${this.data.descripcion}
+    precio:${this.data.precio}`;
   }
   cancelar() {
     this.dialogRef.close(false);

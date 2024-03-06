@@ -8,3 +8,17 @@
     border: 1px solid black !important;
     margin-bottom: 5px !important;
 }
+.mensajeSuccess{
+  background-color: #4caf50;
+    color: antiquewhite;
+    font-weight: bold;
+    padding: 2px;
+    border-radius: 2px;
+}
+.mensajeError{
+  background-color: rgb(239 110 110);
+    color: antiquewhite;
+    font-weight: bold;
+    padding: 2px;
+    border-radius: 2px;
+}

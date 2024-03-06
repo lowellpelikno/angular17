@@ -27,6 +27,8 @@ import { ConfirmarEliminacionComponent } from '../../dialogos/confirmar-eliminac
 export class ArticuloListComponent implements OnInit {
   columnas: string[] = ['id', 'descripcion', 'precio','editar','eliminar'];
   datos: Array<Articulo> = [];
+  mensaje = '';
+  classBackgroundColor = 'mensajeSuccess';
   //datos: Articulo[] = [];
   //dataSource:any;
   dataSource!: MatTableDataSource<Articulo, MatPaginator>;
@@ -45,8 +47,8 @@ constructor (private articulosServicio: ArticulosService,public dialog: MatDialo
     // this.dataSource = new MatTableDataSource<Articulo>(this.datos);
     // this.dataSource.sort = this.sort;
   }
-  abrirDialogo() {
-    const dialogo1 = this.dialog.open(ArticuloDialogoComponent);
+  abrirDialogo(data:Articulo|undefined|null) {
+    const dialogo1 = this.dialog.open(ArticuloDialogoComponent,{data:data});
     dialogo1.afterClosed().subscribe(re => {
       if (re){
         this.articulosServicio.Get().subscribe((result: any) => {
@@ -58,10 +60,13 @@ constructor (private articulosServicio: ArticulosService,public dialog: MatDialo
     });
   }
   borrar(codigo: number) {
-
-
-    
-    const dialogo2 = this.dialog.open(ConfirmarEliminacionComponent);
+    let findByCodigo = this.datos.find(v => v.id == codigo);    
+    if (findByCodigo === undefined) {
+      this.mensaje = 'No se encontró el artículo para eliminar';
+      this.classBackgroundColor = 'mensajeError';
+      return;
+      }
+    const dialogo2 = this.dialog.open(ConfirmarEliminacionComponent, { data: findByCodigo });
     dialogo2.afterClosed().subscribe(re => {
       if (re){
         this.articulosServicio.Delete(codigo).subscribe((result: any) => {

@@ -18,19 +18,24 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './articulo-dialogo.component.css'
 })
 export class ArticuloDialogoComponent {
-title = 'Formualrios.Reactivos';
   mensaje: string = "";
   classBackgroundColor = "mensajeSuccess";
-  articulo!: Articulo;
-
+  articulo: Articulo = { id: 0, descripcion: '', precio: 0 };
+  isEdit = false;
   formularioArticulo = new FormGroup({
-    codigo: new FormControl(0, { validators: [Validators.required] }),
+    codigo: new FormControl({ value: 0,disabled:true }, { validators: [Validators.required] }),
     descripcion: new FormControl('',{ validators: [Validators.required] }),
     precio: new FormControl(''),
   });
-  //@Inject(MAT_DIALOG_DATA) public data: Articulo
-  constructor( private articulosServicio: ArticulosService,public dialogRef: MatDialogRef<ArticuloDialogoComponent>,
-   ) {
+  //
+  constructor( private articulosServicio: ArticulosService,public dialogRef: MatDialogRef<ArticuloDialogoComponent>,@Inject(MAT_DIALOG_DATA) public data: Articulo|undefined
+  ) {
+    if (data != undefined || data != null) {
+      this.isEdit = true;
+      this.formularioArticulo.controls['codigo'].setValue(data.id);
+      this.formularioArticulo.controls['descripcion'].setValue(data.descripcion);
+      this.formularioArticulo.controls['precio'].setValue(data.precio.toString());
+    }
   }  
   ngOnInit() {
   }
@@ -39,11 +44,7 @@ title = 'Formualrios.Reactivos';
     this.dialogRef.close(false);
   }
   agregar() {
-    // if (this.formularioArticulo.get('codigo')?.value == 0) {
-    //   this.classBackgroundColor = "mensajeError";
-    //   this.mensaje = 'Debe ingresar un código de articulo distinto a cero';
-    //   return;
-    // }
+    
     this.articulo.id = 0;
     this.articulo.descripcion = this.formularioArticulo.get('descripcion')?.value??'';
     this.articulo.precio = Number(this.formularioArticulo.get('precio')?.value) ?? 0;
@@ -59,10 +60,29 @@ title = 'Formualrios.Reactivos';
       }
     });
   }
+  editar() {    
+    this.articulo.id = this.formularioArticulo.get('codigo')?.value??0;
+    this.articulo.descripcion = this.formularioArticulo.get('descripcion')?.value??'';
+    this.articulo.precio = Number(this.formularioArticulo.get('precio')?.value) ?? 0;
+    this.articulosServicio.Edit(this.articulo!).subscribe((result:any) => {
+      this.mensaje = result.mensaje;
+      if (!result.success) {
+        this.classBackgroundColor = "mensajeError";
+        //this.dialogRef.close(false);
+      }
+      else {
+        this.limpiar();
+        this.dialogRef.close(true);
+      }
+    });
+  }
   limpiar() {
     this.formularioArticulo.controls['codigo'].setValue(0);
     this.formularioArticulo.controls['descripcion'].setValue('');
     this.formularioArticulo.controls['precio'].setValue('0');
+  }
+  submit() {
+    this.isEdit ? this.editar(): this.agregar();
   }
   
 }

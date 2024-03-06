@@ -1,26 +1,30 @@
-<p>articulo works!</p>
 <div>
   <h1 mat-dialog-title>Administración de artículos</h1>
-  <form [formGroup]="formularioArticulo" (ngSubmit)="agregar()"  style="display: flex;align-content: stretch;align-items: flex-end;flex-direction: column;flex-wrap: nowrap;">     
+  
       <div  style="display: flex;flex-direction: column;align-items: center;" mat-dialog-content>
         @if(mensaje!=''){
           <p [ngClass]="classBackgroundColor">{{mensaje}}</p>
         }
         <p><button (click)="limpiar()" mat-raised-button color="warn">Limpiar Campos</button></p>
-      
+        <form [formGroup]="formularioArticulo"  style="display: flex;align-content: stretch;align-items: flex-end;flex-direction: column;flex-wrap: nowrap;">     
+        
+        <mat-form-field>
+          <input matInput type="text" formControlName="codigo" placeholder="código" [disabled]="true"/>
+        </mat-form-field>
         <mat-form-field>
           <input matInput type="text" formControlName="descripcion" placeholder="descripción"/>
         </mat-form-field>
         <mat-form-field>
           <input matInput type="text" formControlName="precio" placeholder="precio"/>
         </mat-form-field> 
+      </form>
       </div>     
       <div mat-dialog-actions>
-        <button mat-raised-button color="accent" type="submit" cdkFocusInitial class="btn-nuevo" [disabled]="formularioArticulo.invalid">Guardar</button>
+        <button mat-raised-button color="accent" (click)="submit()" cdkFocusInitial class="btn-nuevo" [disabled]="formularioArticulo.invalid">Guardar</button>
         <!-- <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Confirmar</button> -->
         <button mat-button (click)="cancelar()">Cancelar</button>
         <!-- <a routerLink="/articulo-list" mat-raised-button color="primary">Regresar a listado</a> -->
       </div>    
     
-  </form>
+  
 </div>
