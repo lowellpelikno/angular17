@@ -7,6 +7,9 @@ import { Articulo } from '../../interface/articulo';
 import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import { ArticuloDialogoComponent } from '../dialogos/articulo-dialogo.component';
+import { ConfirmarEliminacionComponent } from '../../dialogos/confirmar-eliminacion/confirmar-eliminacion.component';
 
 @Component({
   selector: 'app-articulo-list',
@@ -18,7 +21,8 @@ import { CommonModule } from '@angular/common';
     MatButtonModule,
     RouterLink,
     MatTableModule,  
-    MatSortModule],
+    MatSortModule,
+    ],
 })
 export class ArticuloListComponent implements OnInit {
   columnas: string[] = ['id', 'descripcion', 'precio','editar','eliminar'];
@@ -26,7 +30,7 @@ export class ArticuloListComponent implements OnInit {
   //datos: Articulo[] = [];
   //dataSource:any;
   dataSource!: MatTableDataSource<Articulo, MatPaginator>;
-constructor (private articulosServicio: ArticulosService){}
+constructor (private articulosServicio: ArticulosService,public dialog: MatDialog){}
   @ViewChild(MatSort, {static: true}) sort!: MatSort;
 
   ngOnInit() {
@@ -35,23 +39,45 @@ constructor (private articulosServicio: ArticulosService){}
       this.dataSource = new MatTableDataSource<Articulo>(this.datos);
       this.dataSource.sort = this.sort;
     });
+    
     // for (let x = 1; x <= 10; x++)
     //   this.datos.push(new Articulo(x, `artículo ${x}`, Math.trunc(Math.random() * 1000)));
     // this.dataSource = new MatTableDataSource<Articulo>(this.datos);
     // this.dataSource.sort = this.sort;
   }
-  borrar(codigo: number) {
-    this.articulosServicio.Delete(codigo).subscribe((result: any) => {
-      //this.mensaje = result.mensaje;
-      if (!result.success) {
-        //this.classBackgroundColor = 'mensajeError';
-        return;
+  abrirDialogo() {
+    const dialogo1 = this.dialog.open(ArticuloDialogoComponent);
+    dialogo1.afterClosed().subscribe(re => {
+      if (re){
+        this.articulosServicio.Get().subscribe((result: any) => {
+        this.datos = result.data;
+        this.dataSource = new MatTableDataSource<Articulo>(this.datos);
+        this.dataSource.sort = this.sort;
+        });
       }
-      this.articulosServicio.Get().subscribe((result: any) => {
-      this.datos = result.data;
-      this.dataSource = new MatTableDataSource<Articulo>(this.datos);
-      this.dataSource.sort = this.sort;
     });
+  }
+  borrar(codigo: number) {
+
+
+    
+    const dialogo2 = this.dialog.open(ConfirmarEliminacionComponent);
+    dialogo2.afterClosed().subscribe(re => {
+      if (re){
+        this.articulosServicio.Delete(codigo).subscribe((result: any) => {
+          //this.mensaje = result.mensaje;
+          if (!result.success) {
+            //this.classBackgroundColor = 'mensajeError';
+            return;
+          }
+          this.articulosServicio.Get().subscribe((result: any) => {
+          this.datos = result.data;
+          this.dataSource = new MatTableDataSource<Articulo>(this.datos);
+          this.dataSource.sort = this.sort;
+          });
+        });
+        
+      }
     });
   }
  

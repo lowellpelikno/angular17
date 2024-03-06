@@ -1,0 +1,47 @@
+/*estilos para boton regresar en articulos*/
+.btn-regresar {
+    cursor: pointer;
+    padding: 2px;
+    background-color: #31b0da;
+    color: white;
+    text-decoration: none;
+    border-radius: 3px;
+    border: 1px solid black;
+    margin-bottom: 5px;
+}
+/*estilos para boton agregar nuevo en  articulos*/
+.btn-nuevo {
+    cursor: pointer;
+    padding: 2px;
+    background-color: #4caf50;
+    color: white;
+    text-decoration: none;
+    border-radius: 3px;
+    border: 1px solid black;
+    margin-bottom: 5px;
+}
+/*estilos para boton limpiar en  articulos*/
+.btn-limpiar {
+    cursor: pointer;
+    padding: 2px;
+    background-color: #d3b635;
+    color: white;
+    text-decoration: none;
+    border-radius: 3px;
+    border: 1px solid black;
+    margin-bottom: 5px;
+}
+.mensajeSuccess{
+  background-color: #4caf50;
+    color: antiquewhite;
+    font-weight: bold;
+    padding: 2px;
+    border-radius: 2px;
+}
+.mensajeError{
+  background-color: rgb(239 110 110);
+    color: antiquewhite;
+    font-weight: bold;
+    padding: 2px;
+    border-radius: 2px;
+}
