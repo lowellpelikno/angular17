@@ -8,8 +8,10 @@ import { RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { ArticuloDialogoComponent } from '../dialogos/articulo-dialogo.component';
 import { ConfirmarEliminacionComponent } from '../../dialogos/confirmar-eliminacion/confirmar-eliminacion.component';
+import { ConfirmarActivarDesactivarComponent } from '../../dialogos/confirmar-ActivarDesactivar/confirmar-activarDesactivar.component';
 
 @Component({
   selector: 'app-articulo-list',
@@ -22,13 +24,15 @@ import { ConfirmarEliminacionComponent } from '../../dialogos/confirmar-eliminac
     RouterLink,
     MatTableModule,  
     MatSortModule,
+    MatSlideToggleModule
     ],
 })
 export class ArticuloListComponent implements OnInit {
-  columnas: string[] = ['id', 'descripcion', 'precio','editar','eliminar'];
+  columnas: string[] = ['id', 'descripcion', 'precio','imagen','fechaAlta','fechaEdicion','editar','onOff'];
   datos: Array<Articulo> = [];
   mensaje = '';
   classBackgroundColor = 'mensajeSuccess';
+  checked: boolean = false;
   //datos: Articulo[] = [];
   //dataSource:any;
   dataSource!: MatTableDataSource<Articulo, MatPaginator>;
@@ -85,7 +89,39 @@ constructor (private articulosServicio: ArticulosService,public dialog: MatDialo
       }
     });
   }
- 
+  change(e: any, data: Articulo) {
+    let msj = e.checked ? 'Activar' : 'Desactivar';
+    const mensaje = `estas segudo de ${msj} este artículo??`
+    const dialogo1 = this.dialog.open(ConfirmarActivarDesactivarComponent,{data:mensaje});
+    dialogo1.afterClosed().subscribe(re => {
+      if (re) {
+        data.activo = e.checked;
+        this.articulosServicio.ActivarDesactivar(data).subscribe((result: any) => {
+          this.mensaje = result.mensaje;
+        });
+      }
+      else {
+        e.source.checked = !e.checked;
+        
+        var fess = '';
+      }
+    });
+
+
+
+    // if (this.checked) {
+    //   if (confirm("Are you sure")) {
+    //     this.checked = !this.checked;
+    //     console.log("toggle")
+    //   }
+    //   else {
+    //     e.source.checked = true;
+    //     console.log("toggle should not change if I click the cancel button")
+    //   }
+    // } else {
+    //   this.checked = !this.checked;
+    // }
+  }
 }
 
 // export class Articulo {

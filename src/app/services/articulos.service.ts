@@ -29,6 +29,9 @@ export class ArticulosService {
   Edit(item: Articulo) {
     return this.http.put(`${this._SERVER_}articulos`, JSON.stringify(item),this._HTTPOPTIONS_);
   }
+  ActivarDesactivar(item: Articulo) {
+    return this.http.put(`${this._SERVER_}articulos/ActivarDesactivar`, JSON.stringify(item),this._HTTPOPTIONS_);
+  }
   Delete(id: number) {
     return this.http.delete(`${this._SERVER_}articulos/${id}`);
   }

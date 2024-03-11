@@ -11,6 +11,11 @@
       <td mat-cell *matCellDef="let articulo"> {{articulo.id}} </td>
     </ng-container>
 
+    <ng-container matColumnDef="imagen">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header  style="flex: 0 0 50% !important;"> Imagen </th>
+      <td mat-cell *matCellDef="let articulo"> @if(articulo.imagen != ''){<img src="{{articulo.imagen}}" style="width: 50px;height: 50px;"/>} </td>
+    </ng-container>
+
     <ng-container matColumnDef="descripcion">
       <th mat-header-cell *matHeaderCellDef mat-sort-header  style="flex: 0 0 50% !important;"> Descripción </th>
       <td mat-cell *matCellDef="let articulo"> {{articulo.descripcion}} </td>
@@ -20,16 +25,29 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header style="flex: 0 0 10% !important;"> Precio </th>
       <td mat-cell *matCellDef="let articulo" style="text-align: right"> {{articulo.precio|currency:'$'}} </td>
     </ng-container>
+    <ng-container matColumnDef="fechaAlta">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header  style="flex: 0 0 50% !important;">Fecha creación </th>
+      <td mat-cell *matCellDef="let articulo"> {{articulo.fechaAlta |date: 'dd/MM/yyyy'}} </td>
+    </ng-container>
+    <ng-container matColumnDef="fechaEdicion">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header  style="flex: 0 0 50% !important;">Fecha edicion </th>
+      <td mat-cell *matCellDef="let articulo"> {{articulo.fechaEdicion |date: 'dd/MM/yyyy'}} </td>
+    </ng-container>
     <ng-container matColumnDef="editar">
-    <th mat-header-cell *matHeaderCellDef  style="flex: 0 0 10% !important;"> Editar </th>
-    <td mat-cell *matCellDef="let element">
-      <button (click)="abrirDialogo(element)" mat-raised-button color="primary">Editar</button>
-      <!-- <a routerLink="/articulo-editar/{{ element.id }}" mat-raised-button color="primary">Editar</a> -->
-    </td>
+      <th mat-header-cell *matHeaderCellDef  style="flex: 0 0 10% !important;"> Editar </th>
+      <td mat-cell *matCellDef="let element">
+        <button (click)="abrirDialogo(element)" mat-raised-button color="primary">Editar</button>
+        <!-- <a routerLink="/articulo-editar/{{ element.id }}" mat-raised-button color="primary">Editar</a> -->
+      </td>
   </ng-container>
-    <ng-container matColumnDef="eliminar">
-      <th mat-header-cell *matHeaderCellDef style="flex: 0 0 10% !important;"> Eliminar </th>
-      <td mat-cell *matCellDef="let element"><button (click)="borrar(element.id)" mat-raised-button color="warn">Eliminar?</button>  </td> 
+    <ng-container matColumnDef="onOff">
+      <th mat-header-cell *matHeaderCellDef style="flex: 0 0 10% !important;"> on/Off </th>
+      <td mat-cell *matCellDef="let element">
+        <mat-slide-toggle (change)="change($event,element)" [checked]="element.activo">
+          @if(element.activo){activo}
+          @else{inactivo}</mat-slide-toggle>
+        <!-- <button (click)="borrar(element.id)" mat-raised-button color="warn">Eliminar?</button>   -->
+      </td> 
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="columnas"></tr>
     <tr mat-row *matRowDef="let row; columns: columnas;"></tr>

@@ -28,7 +28,7 @@ title = 'Formualrios.Reactivos';
     precio: new FormControl(''),
   });
   constructor( private articulosServicio: ArticulosService) {
-    this.articulo = { id: 0, descripcion: '', precio: 0 };
+    this.articulo = { id: 0, descripcion: '', precio: 0, activo:false, imagen:'',fechaAlta: new Date,fechaEdicion : new Date };
   }  
   ngOnInit() {
   }

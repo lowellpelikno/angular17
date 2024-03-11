@@ -6,18 +6,23 @@
           <p [ngClass]="classBackgroundColor">{{mensaje}}</p>
         }
         <p><button (click)="limpiar()" mat-raised-button color="warn">Limpiar Campos</button></p>
-        <form [formGroup]="formularioArticulo"  style="display: flex;align-content: stretch;align-items: flex-end;flex-direction: column;flex-wrap: nowrap;">     
-        
-        <mat-form-field>
-          <input matInput type="text" formControlName="codigo" placeholder="código" [disabled]="true"/>
-        </mat-form-field>
-        <mat-form-field>
-          <input matInput type="text" formControlName="descripcion" placeholder="descripción"/>
-        </mat-form-field>
-        <mat-form-field>
-          <input matInput type="text" formControlName="precio" placeholder="precio"/>
-        </mat-form-field> 
-      </form>
+          <form [formGroup]="formularioArticulo"  style="display: flex;align-content: stretch;align-items: flex-end;flex-direction: column;flex-wrap: nowrap;">
+            <mat-form-field>
+              <input matInput type="text" formControlName="codigo" placeholder="código"/>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput type="text" formControlName="descripcion" placeholder="descripción"/>
+            </mat-form-field>
+            <mat-form-field>
+              <input matInput type="text" formControlName="precio" placeholder="precio"/>
+            </mat-form-field> 
+            <input type="file" (change)="convertImageToBase64($event)" accept="image/*">
+            <img src="{{image}}" style="width: auto; height: 100px;">
+              <mat-slide-toggle  [checked]="activo" (change)="change($event)">
+                @if(activo){activo}
+                @else{inactivo}
+              </mat-slide-toggle>
+          </form>
       </div>     
       <div mat-dialog-actions>
         <button mat-raised-button color="accent" (click)="submit()" cdkFocusInitial class="btn-nuevo" [disabled]="formularioArticulo.invalid">Guardar</button>

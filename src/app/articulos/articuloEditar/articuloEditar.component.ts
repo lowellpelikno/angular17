@@ -32,7 +32,7 @@ export class ArticuloEditarComponent implements OnInit{
     this.activatedRoute.paramMap.subscribe((parametros: ParamMap) => {
       this.cod = parseInt(parametros.get("cod")!);
     });
-    this.articulo = { id: 0, descripcion: '', precio: 0 };
+    this.articulo = { id: 0, descripcion: '', precio: 0, activo:false, imagen:'',fechaAlta: new Date,fechaEdicion : new Date };
   }  
   ngOnInit() {
     this.hayRegistros();
